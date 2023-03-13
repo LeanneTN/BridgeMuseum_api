@@ -1,4 +1,6 @@
 package com.example.bridgemuseum_api.service;
 
-public class UserService {
+import org.springframework.stereotype.Service;
+
+public interface UserService {
 }
