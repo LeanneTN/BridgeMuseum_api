@@ -8,3 +8,9 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:8099/user/id/1/phone/12345678900
+Content-Type: application/json
+
+{ }
+
+###

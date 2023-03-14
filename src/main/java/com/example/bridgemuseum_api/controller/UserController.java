@@ -47,9 +47,14 @@ public class UserController {
         return CommonResponse.createForError("only admin can watch the user list");
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/id/{id}")
     public CommonResponse<User> getUserById(@PathVariable("id") Integer id){
         return userService.getDetailById(id);
+    }
+
+    @GetMapping("/username/{username}")
+    public CommonResponse<User> getUserByUsername(@PathVariable("username") String username){
+        return userService.getDetailByName(username);
     }
 
     @DeleteMapping("/user/{id}")
@@ -86,6 +91,12 @@ public class UserController {
     public CommonResponse<Address> modifyAddress(@PathVariable("id") @NotBlank Integer id,
                                                  @RequestBody @NotBlank Address address){
         return userService.modifyAddressById(id, address);
+    }
+
+    @PostMapping("/id/{id}/phone/{phoneNumber}")
+    public CommonResponse<Object> modifyPhoneNumber(@PathVariable("id") Integer id,
+                                                    @PathVariable("phoneNumber") String phoneNumber){
+        return userService.modifyPhoneNumber(id, phoneNumber);
     }
 
 }

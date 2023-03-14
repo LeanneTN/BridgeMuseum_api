@@ -185,4 +185,21 @@ public class UserServiceImpl implements UserService {
         }
         return CommonResponse.createForSuccess(address);
     }
+
+    @Override
+    public CommonResponse<Object> modifyPhoneNumber(int id, String phoneNum) {
+        User user = userMapper.selectById(id);
+        if(user == null){
+            return CommonResponse.createForError("user doesn't exist");
+        }
+        if(phoneNum.length()!= 11){
+            return CommonResponse.createForError("phone number format wrong");
+        }
+        user.setPhone(phoneNum);
+        int role = userMapper.updateById(user);
+        if (role==0){
+            return CommonResponse.createForError("modify phone number failed");
+        }
+        return CommonResponse.createForSuccess();
+    }
 }

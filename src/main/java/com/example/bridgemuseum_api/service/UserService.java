@@ -29,4 +29,6 @@ public interface UserService {
     CommonResponse<Object> deleteUserById(int id);
 
     CommonResponse<Address> modifyAddressById(int id, Address address);
+
+    CommonResponse<Object> modifyPhoneNumber(int id, String phoneNum);
 }
