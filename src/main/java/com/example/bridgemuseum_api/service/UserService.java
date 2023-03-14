@@ -5,6 +5,8 @@ import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.domain.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 public interface UserService {
     CommonResponse<User> login(String username, String password);
 
@@ -21,4 +23,8 @@ public interface UserService {
     CommonResponse<User> modifyUsername(String oldUsername, String newUsername);
 
     CommonResponse<Address> getAddressByUsername(String username);
+
+    CommonResponse<ArrayList<User>> getUserList(User user);
+
+    CommonResponse<Object> deleteUserById(int id);
 }

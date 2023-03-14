@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LeanneTN
@@ -136,5 +138,29 @@ public class UserServiceImpl implements UserService {
         address.setCity(user.getCity());
         address.setPreciseAddress(user.getAddress());
         return CommonResponse.createForSuccess(address);
+    }
+
+    @Override
+    public CommonResponse<ArrayList<User>> getUserList(User user) {
+        User admin = userMapper.selectById(user.getId());
+        if(bCryptPasswordEncoder.matches(user.getPassword(), admin.getPassword())){
+            List<User> userList = userMapper.selectList(Wrappers.<User>query().eq("role", 1));
+            ArrayList<User> userArrayList = new ArrayList<>(userList);
+            return CommonResponse.createForSuccess(userArrayList);
+        }
+        return CommonResponse.createForError("password of the admin is wrong");
+    }
+
+    @Override
+    public CommonResponse<Object> deleteUserById(int id) {
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            return CommonResponse.createForError("user doesn't exist");
+        }
+        int role = userMapper.deleteById(id);
+        if(role == 0){
+            return CommonResponse.createForError("delete user failed");
+        }
+        return CommonResponse.createForSuccess();
     }
 }
