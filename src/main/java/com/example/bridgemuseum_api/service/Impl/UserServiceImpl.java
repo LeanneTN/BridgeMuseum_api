@@ -163,4 +163,26 @@ public class UserServiceImpl implements UserService {
         }
         return CommonResponse.createForSuccess();
     }
+
+    @Override
+    public CommonResponse<Address> modifyAddressById(int id, Address address) {
+        User user = userMapper.selectById(id);
+        if(user == null){
+            return CommonResponse.createForError("user doesn't exist");
+        }
+        if(address.getCity()!=null){
+            user.setCity(address.getCity());
+        }
+        if(address.getProvince()!=null){
+            user.setProvince(address.getProvince());
+        }
+        if(address.getPreciseAddress()!=null){
+            user.setAddress(address.getPreciseAddress());
+        }
+        int role = userMapper.updateById(user);
+        if(role==0){
+            return CommonResponse.createForError("address update failed");
+        }
+        return CommonResponse.createForSuccess(address);
+    }
 }

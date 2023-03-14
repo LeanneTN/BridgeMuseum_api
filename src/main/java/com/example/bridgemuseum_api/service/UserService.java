@@ -27,4 +27,6 @@ public interface UserService {
     CommonResponse<ArrayList<User>> getUserList(User user);
 
     CommonResponse<Object> deleteUserById(int id);
+
+    CommonResponse<Address> modifyAddressById(int id, Address address);
 }

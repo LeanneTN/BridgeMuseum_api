@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public CommonResponse<ArrayList<User>> getUserList(@RequestParam @NotBlank User user){
+    public CommonResponse<ArrayList<User>> getUserList(@RequestBody @NotBlank User user){
         if (user.getRole() == CONSTANT.ROLE.ADMIN){
             return userService.getUserList(user);
         }
@@ -80,6 +80,12 @@ public class UserController {
     @GetMapping("/{username}/address")
     public CommonResponse<Address> getAddressByUsername(@PathVariable("username") @NotBlank String username){
         return userService.getAddressByUsername(username);
+    }
+
+    @PostMapping("/id/{id}/address")
+    public CommonResponse<Address> modifyAddress(@PathVariable("id") @NotBlank Integer id,
+                                                 @RequestBody @NotBlank Address address){
+        return userService.modifyAddressById(id, address);
     }
 
 }

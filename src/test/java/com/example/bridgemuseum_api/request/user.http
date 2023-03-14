@@ -1,0 +1,10 @@
+POST http://localhost:8099/user/id/1/address
+Content-Type: application/json
+
+{
+  "province" : "Hunan",
+  "city" : "Changsha",
+  "preciseAddress" : "Central South University"
+}
+
+###
