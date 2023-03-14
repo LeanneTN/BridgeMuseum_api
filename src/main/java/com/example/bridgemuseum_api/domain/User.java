@@ -21,5 +21,10 @@ public class User implements Serializable {
     private String name;
     private String password;
     private String phone;
+    // indentity of the user, admin or ordinary user
     private Integer role;
+    private String province;
+    private String city;
+    // precise address of the user
+    private String address;
 }
