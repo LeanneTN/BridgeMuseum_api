@@ -4,11 +4,11 @@ import com.example.bridgemuseum_api.common.CONSTANT;
 import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.domain.User;
 import com.example.bridgemuseum_api.service.UserService;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 

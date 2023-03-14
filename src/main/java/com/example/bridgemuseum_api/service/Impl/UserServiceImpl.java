@@ -6,11 +6,13 @@ import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.domain.User;
 import com.example.bridgemuseum_api.mapper.UserMapper;
 import com.example.bridgemuseum_api.service.UserService;
-import jakarta.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author LeanneTN
