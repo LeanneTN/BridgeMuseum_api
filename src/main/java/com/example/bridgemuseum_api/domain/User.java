@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * @author LeanneTN
- * Data: 2023/3/13
+ * Date: 2023/3/13
  */
 @Data
 @TableName("user")
