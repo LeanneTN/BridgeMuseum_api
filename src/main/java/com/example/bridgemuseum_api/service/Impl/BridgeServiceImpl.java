@@ -67,7 +67,7 @@ public class BridgeServiceImpl implements BridgeService {
     }
 
     @Override
-    public CommonResponse<Object> deleteBridgesByUserId(String userId) {
+    public CommonResponse<Object> deleteBridgesByUserId(Long userId) {
         int role = bridgeMapper.delete(Wrappers.<Bridge>query().eq("user_id", userId));
         if(role == 0){
             return CommonResponse.createForError("delete bridges failed");

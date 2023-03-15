@@ -1,0 +1,14 @@
+PUT http://localhost:8099/bridge/
+Content-Type: application/json
+
+{
+  "name": "abc",
+  "username": "a",
+  "userId": 1,
+  "province": "Hunan",
+  "city": "Changsha",
+  "preciseAddress": "Central South University"
+}
+
+###
+GET http://localhost:8099/bridge/bridges/name/abc/

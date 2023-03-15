@@ -17,7 +17,7 @@ public interface BridgeService {
 
     CommonResponse<Object> deleteBridgesByUsername(String username);
 
-    CommonResponse<Object> deleteBridgesByUserId(String userId);
+    CommonResponse<Object> deleteBridgesByUserId(Long userId);
 
     CommonResponse<Bridge> addBridge(Bridge bridge);
 
