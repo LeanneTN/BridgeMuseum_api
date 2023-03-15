@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bridgemuseum_api.VO.Address;
 import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.domain.Bridge;
+import com.example.bridgemuseum_api.domain.User;
 import com.example.bridgemuseum_api.mapper.BridgeMapper;
 import com.example.bridgemuseum_api.service.BridgeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,36 +41,83 @@ public class BridgeServiceImpl implements BridgeService {
 
     @Override
     public CommonResponse<List<Bridge>> getBridgesByUsername(String username) {
-        return null;
+        List<Bridge> bridgeList = bridgeMapper.selectList(Wrappers.<Bridge>query().eq("username", username));
+        if(bridgeList.isEmpty()){
+            return CommonResponse.createForError("bridge uploaded by " + username + " doesn't exist");
+        }
+        return CommonResponse.createForSuccess(bridgeList);
     }
 
     @Override
     public CommonResponse<Object> deleteBridgeById(int id) {
-        return null;
+        int role = bridgeMapper.deleteById(id);
+        if(role == 0){
+            return CommonResponse.createForError("delete bridge failed");
+        }
+        return CommonResponse.createForSuccess();
     }
 
     @Override
     public CommonResponse<Object> deleteBridgesByUsername(String username) {
-        return null;
+        int role = bridgeMapper.delete(Wrappers.<Bridge>query().eq("username", username));
+        if(role == 0){
+            return CommonResponse.createForError("delete bridges failed");
+        }
+        return CommonResponse.createForSuccess();
+    }
+
+    @Override
+    public CommonResponse<Object> deleteBridgesByUserId(String userId) {
+        int role = bridgeMapper.delete(Wrappers.<Bridge>query().eq("user_id", userId));
+        if(role == 0){
+            return CommonResponse.createForError("delete bridges failed");
+        }
+        return CommonResponse.createForSuccess();
     }
 
     @Override
     public CommonResponse<Bridge> addBridge(Bridge bridge) {
-        return null;
+        int role = bridgeMapper.insert(bridge);
+        if (role == 0){
+            return CommonResponse.createForError("add bridge failed");
+        }
+        return CommonResponse.createForSuccess(bridge);
     }
 
     @Override
     public CommonResponse<Bridge> modifyBridge(Bridge bridge) {
-        return null;
+        int role = bridgeMapper.updateById(bridge);
+        if(role == 0){
+            return CommonResponse.createForError("bridge modify failed");
+        }
+        return CommonResponse.createForSuccess(bridge);
     }
 
     @Override
     public CommonResponse<Address> modifyAddressOfBridgeById(int id, Address address) {
-        return null;
+        Bridge bridge = bridgeMapper.selectById(id);
+        if(bridge == null){
+            return CommonResponse.createForError("bridge doesn't exist");
+        }
+        if(address.getProvince() != null){
+            bridge.setProvince(address.getProvince());
+        }
+        if(address.getCity() != null){
+            bridge.setCity(address.getCity());
+        }
+        if(address.getPreciseAddress() != null){
+            bridge.setPreciseAddress(address.getPreciseAddress());
+        }
+        int role = bridgeMapper.updateById(bridge);
+        if (role == 0){
+            return CommonResponse.createForError("address update failed");
+        }
+        return CommonResponse.createForSuccess(address);
     }
 
     @Override
     public CommonResponse<List<Bridge>> getAllBridges() {
-        return null;
+        List<Bridge> bridgeList = bridgeMapper.selectList(null);
+        return CommonResponse.createForSuccess(bridgeList);
     }
 }
