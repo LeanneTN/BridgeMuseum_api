@@ -128,17 +128,26 @@ public class PassageServiceImpl implements PassageService {
     }
 
     @Override
-    public CommonResponse<Article> updateArticle(Article article) {
-        return null;
+    public CommonResponse<Article> updateArticle(Article article, Integer headId, Long userId) {
+        deleteArticlesByUserId(headId);
+        return addArticle(article, userId);
     }
 
     @Override
     public CommonResponse<Object> deleteArticleByPassageHeadId(Integer passageHeadId) {
-        return null;
+        int role = passageMapper.delete(Wrappers.<Passage>query().eq("passage_head_id", passageHeadId));
+        if(role == 0){
+            return CommonResponse.createForError("delete article failed");
+        }
+        return CommonResponse.createForSuccess();
     }
 
     @Override
     public CommonResponse<Object> deleteArticlesByUserId(Integer userId) {
-        return null;
+        int role = passageMapper.delete(Wrappers.<Passage>query().eq("user_id", userId));
+        if(role == 0){
+            return CommonResponse.createForError("delete article failed");
+        }
+        return CommonResponse.createForSuccess();
     }
 }

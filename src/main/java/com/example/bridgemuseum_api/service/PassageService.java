@@ -19,7 +19,7 @@ public interface PassageService {
 
     CommonResponse<Article> addArticle(Article article, Long userId);
 
-    CommonResponse<Article> updateArticle(Article article);
+    CommonResponse<Article> updateArticle(Article article, Integer headId, Long userId);
 
     CommonResponse<Object> deleteArticleByPassageHeadId(Integer passageHeadId);
 
