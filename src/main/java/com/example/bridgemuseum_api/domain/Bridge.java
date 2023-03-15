@@ -11,6 +11,8 @@ public class Bridge {
     @TableId(type = IdType.AUTO)
     private Long id;
     private String name;
+    // uploader's username
+    private String username;
     private String province;
     private String city;
     private String preciseAddress;
