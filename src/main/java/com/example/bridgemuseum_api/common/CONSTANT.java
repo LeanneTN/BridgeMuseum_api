@@ -6,4 +6,9 @@ public class CONSTANT {
         int USER = 1;
         int ADMIN = 0;
     }
+
+    public interface PASSAGE{
+        int HEAD = 0;
+        int NOTHEAD = 1;
+    }
 }

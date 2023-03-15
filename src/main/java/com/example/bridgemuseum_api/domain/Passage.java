@@ -12,5 +12,7 @@ public class Passage {
     private Integer id;
     private Long userId;
     // the id of the head of passage
-    private Long passageHeadId;
+    private Integer passageHeadId;
+    private Integer ifHead;
+    private String content;
 }

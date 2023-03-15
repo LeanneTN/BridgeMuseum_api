@@ -9,7 +9,10 @@ public enum ResponseCode {
     //response error
     ERROR(1, "ERROR"),
     ARGUMENT_ILLEGAL(2, "ARGUMENT_ILLEGAL"),
-    NEED_LOGIN(3, "NEED LOGIN");
+    NEED_LOGIN(3, "NEED LOGIN"),
+    LIST_EMPTY(4, "LIST IS EMPTY"),
+
+    PASSAGE_OVER_BOUND(21, "PASSAGE IS OVER THE BOUND");
 
     private final int code;
     private final String description;
