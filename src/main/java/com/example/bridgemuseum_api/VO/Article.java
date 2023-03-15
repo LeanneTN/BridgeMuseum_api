@@ -8,4 +8,5 @@ import java.util.List;
 public class Article {
     private List<String> paragraphs;
     private Integer numOfParas;
+    private Integer headId;
 }

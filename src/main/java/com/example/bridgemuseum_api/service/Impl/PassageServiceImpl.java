@@ -47,11 +47,12 @@ public class PassageServiceImpl implements PassageService {
         }
         article.setParagraphs(paragraphs);
         article.setNumOfParas(numOfParagraphs);
+        article.setHeadId(passageHeadId);
         return CommonResponse.createForSuccess(article);
     }
 
     @Override
-    public CommonResponse<List<Article>> getAllArticlesByUserId(Integer userId) {
+    public CommonResponse<List<Article>> getAllArticlesByUserId(Long userId) {
         List<Integer> headIds = getAllPassageHeadByUserId(userId).getData();
         if(headIds.isEmpty()){
             return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), "passages of this user id is empty");
@@ -59,6 +60,7 @@ public class PassageServiceImpl implements PassageService {
         List<Article> articles = new ArrayList<>();
         for(Integer headId : headIds){
             Article article = getArticleByPassageHead(headId).getData();
+            article.setHeadId(headId);
             articles.add(article);
         }
         return CommonResponse.createForSuccess(articles);
@@ -77,13 +79,14 @@ public class PassageServiceImpl implements PassageService {
         List<Article> articles = new ArrayList<>();
         for (int headId : headIds){
             Article article = getArticleByPassageHead(headId).getData();
+            article.setHeadId(headId);
             articles.add(article);
         }
         return CommonResponse.createForSuccess(articles);
     }
 
     @Override
-    public CommonResponse<List<Integer>> getAllPassageHeadByUserId(Integer userId) {
+    public CommonResponse<List<Integer>> getAllPassageHeadByUserId(Long userId) {
         List<Passage> passages = passageMapper.selectList(Wrappers.<Passage>query().eq("user_id", userId)
                                                                     .eq("if_head", CONSTANT.PASSAGE.HEAD));
         if(passages.isEmpty()){
@@ -129,7 +132,7 @@ public class PassageServiceImpl implements PassageService {
 
     @Override
     public CommonResponse<Article> updateArticle(Article article, Integer headId, Long userId) {
-        deleteArticlesByUserId(headId);
+        deleteArticleByPassageHeadId(headId);
         return addArticle(article, userId);
     }
 
@@ -143,7 +146,7 @@ public class PassageServiceImpl implements PassageService {
     }
 
     @Override
-    public CommonResponse<Object> deleteArticlesByUserId(Integer userId) {
+    public CommonResponse<Object> deleteArticlesByUserId(Long userId) {
         int role = passageMapper.delete(Wrappers.<Passage>query().eq("user_id", userId));
         if(role == 0){
             return CommonResponse.createForError("delete article failed");

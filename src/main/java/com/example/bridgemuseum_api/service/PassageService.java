@@ -11,11 +11,11 @@ public interface PassageService {
 
     CommonResponse<Article> getArticleByPassageHead(Integer passageHeadId);
 
-    CommonResponse<List<Article>> getAllArticlesByUserId(Integer userId);
+    CommonResponse<List<Article>> getAllArticlesByUserId(Long userId);
 
     CommonResponse<List<Article>> getAllArticles();
 
-    CommonResponse<List<Integer>> getAllPassageHeadByUserId(Integer userId);
+    CommonResponse<List<Integer>> getAllPassageHeadByUserId(Long userId);
 
     CommonResponse<Article> addArticle(Article article, Long userId);
 
@@ -23,6 +23,6 @@ public interface PassageService {
 
     CommonResponse<Object> deleteArticleByPassageHeadId(Integer passageHeadId);
 
-    CommonResponse<Object> deleteArticlesByUserId(Integer userId);
+    CommonResponse<Object> deleteArticlesByUserId(Long userId);
 
 }
