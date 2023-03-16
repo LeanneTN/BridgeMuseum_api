@@ -7,6 +7,11 @@ public class CONSTANT {
         int ADMIN = 0;
     }
 
+    public interface BRIDGE_TYPE{
+        int HISTORICAL_BRIDGE = 0;
+        int RED_BRIDGE_OF_WAR = 1;
+    }
+
     public interface PASSAGE{
         int HEAD = 0;
         int NOTHEAD = 1;

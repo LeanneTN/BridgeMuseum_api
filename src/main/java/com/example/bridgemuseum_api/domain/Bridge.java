@@ -19,4 +19,8 @@ public class Bridge {
     private String province;
     private String city;
     private String preciseAddress;
+    private String dynasty;
+    private Integer builtYear;
+    private Integer bridgeType;
+    private Long urlOfPics;
 }

@@ -1,6 +1,7 @@
 package com.example.bridgemuseum_api.controller;
 
 import com.example.bridgemuseum_api.VO.Address;
+import com.example.bridgemuseum_api.common.CONSTANT;
 import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.domain.Bridge;
 import com.example.bridgemuseum_api.service.BridgeService;
@@ -69,5 +70,20 @@ public class BridgeController {
     public CommonResponse<Address> modifyAddressById(@PathVariable("id") Integer id,
                                                      @RequestBody @NotBlank Address address){
         return bridgeService.modifyAddressOfBridgeById(id, address);
+    }
+
+    @GetMapping("/bridges/dynasty/{dynasty}")
+    public CommonResponse<List<Bridge>> getBridgesByDynasty(@PathVariable("dynasty") String dynasty){
+        return bridgeService.getBridgesByDynasty(dynasty);
+    }
+
+    @GetMapping("/bridges/type/red_bridge")
+    public CommonResponse<List<Bridge>> getRedBridges(){
+        return bridgeService.getBridgesByType(CONSTANT.BRIDGE_TYPE.RED_BRIDGE_OF_WAR);
+    }
+
+    @GetMapping("/bridges/type/historical_bridge")
+    public CommonResponse<List<Bridge>> getHistoricalBridges(){
+        return bridgeService.getBridgesByType(CONSTANT.BRIDGE_TYPE.HISTORICAL_BRIDGE);
     }
 }
