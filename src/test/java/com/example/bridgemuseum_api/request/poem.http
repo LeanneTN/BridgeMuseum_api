@@ -1,0 +1,9 @@
+PUT http://localhost:8099/poem/
+Content-Type: application/json
+
+{
+  "name" : "aaa",
+  "dynasty" : "a",
+  "poet" : "a",
+  "content" : "aaaaaaa"
+}

@@ -112,7 +112,11 @@ public class PassageServiceImpl implements PassageService {
                 passage.setContent(article.getParagraphs().get(i));
                 passage.setUserId(userId);
                 passage.setIfHead(CONSTANT.PASSAGE.HEAD);
-                headId = passageMapper.insert(passage);
+                int flag = passageMapper.insert(passage);
+                if(flag == 0){
+                    return CommonResponse.createForError("add article failed");
+                }
+                headId = passage.getId();
                 passage.setPassageHeadId(headId);
                 passageMapper.update(passage, null);
             }else{
