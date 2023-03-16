@@ -1,20 +1,38 @@
 package com.example.bridgemuseum_api.service.Impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.bridgemuseum_api.VO.Article;
+import com.example.bridgemuseum_api.common.CONSTANT;
 import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.common.ResponseCode;
+import com.example.bridgemuseum_api.domain.Bridge;
 import com.example.bridgemuseum_api.domain.Collection;
+import com.example.bridgemuseum_api.domain.Poem;
 import com.example.bridgemuseum_api.mapper.CollectionMapper;
+import com.example.bridgemuseum_api.mapper.PassageMapper;
+import com.example.bridgemuseum_api.service.BridgeService;
 import com.example.bridgemuseum_api.service.CollectionService;
+import com.example.bridgemuseum_api.service.PassageService;
+import com.example.bridgemuseum_api.service.PoemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("collectionService")
 public class CollectionServiceImpl implements CollectionService {
     @Autowired
     private CollectionMapper collectionMapper;
+
+    @Autowired
+    private PassageService passageService;
+
+    @Autowired
+    private BridgeService bridgeService;
+
+    @Autowired
+    private PoemService poemService;
 
     @Override
     public CommonResponse<Collection> addCollection(Collection collection) {
@@ -88,5 +106,50 @@ public class CollectionServiceImpl implements CollectionService {
             return CommonResponse.createForError("delete collection item failed");
         }
         return CommonResponse.createForSuccess();
+    }
+
+    @Override
+    public CommonResponse<List<Bridge>> getBridgesFromCollection(Long userId) {
+        List<Collection> collections = collectionMapper.selectList(Wrappers.<Collection>query()
+                .eq("user_id", userId).eq("type", CONSTANT.COLLECTION_ITEM.BRIDGE));
+        List<Bridge> bridgeList = new ArrayList<>();
+        for (Collection collection: collections){
+            Bridge bridge = bridgeService.getBridgeById(collection.getIdOfItem()).getData();
+            bridgeList.add(bridge);
+        }
+        if(bridgeList.isEmpty()){
+            return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), ResponseCode.LIST_EMPTY.getDescription());
+        }
+        return CommonResponse.createForSuccess(bridgeList);
+    }
+
+    @Override
+    public CommonResponse<List<Poem>> getPoemsFromCollection(Long userId) {
+        List<Collection> collections = collectionMapper.selectList(Wrappers.<Collection>query()
+                .eq("user_id", userId).eq("type", CONSTANT.COLLECTION_ITEM.POEM));
+        List<Poem> poems = new ArrayList<>();
+        for (Collection collection : collections){
+            Poem poem = poemService.getPoemById(collection.getIdOfItem()).getData();
+            poems.add(poem);
+        }
+        if (poems.isEmpty()){
+            return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), ResponseCode.LIST_EMPTY.getDescription());
+        }
+        return CommonResponse.createForSuccess(poems);
+    }
+
+    @Override
+    public CommonResponse<List<Article>> getArticlesFromCollection(Long userId) {
+        List<Collection> collections = collectionMapper.selectList(Wrappers.<Collection>query()
+                .eq("user_id", userId).eq("type", CONSTANT.COLLECTION_ITEM.ARTICLE));
+        List<Article> articles = new ArrayList<>();
+        for (Collection collection: collections){
+            Article article = passageService.getArticleByPassageHead(collection.getIdOfItem()).getData();
+            articles.add(article);
+        }
+        if (articles.isEmpty()){
+            return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), ResponseCode.LIST_EMPTY.getDescription());
+        }
+        return CommonResponse.createForSuccess(articles);
     }
 }

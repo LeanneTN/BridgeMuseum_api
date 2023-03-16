@@ -1,8 +1,11 @@
 package com.example.bridgemuseum_api.controller;
 
+import com.example.bridgemuseum_api.VO.Article;
 import com.example.bridgemuseum_api.common.CONSTANT;
 import com.example.bridgemuseum_api.common.CommonResponse;
+import com.example.bridgemuseum_api.domain.Bridge;
 import com.example.bridgemuseum_api.domain.Collection;
+import com.example.bridgemuseum_api.domain.Poem;
 import com.example.bridgemuseum_api.service.BridgeService;
 import com.example.bridgemuseum_api.service.CollectionService;
 import com.example.bridgemuseum_api.service.PassageService;
@@ -18,15 +21,6 @@ import java.util.List;
 public class CollectionController {
     @Autowired
     private CollectionService collectionService;
-
-    @Autowired
-    private BridgeService bridgeService;
-
-    @Autowired
-    private PassageService passageService;
-
-    @Autowired
-    private PoemService poemService;
 
     //todo: add collection service for shopping module
 
@@ -75,6 +69,21 @@ public class CollectionController {
     public CommonResponse<Object> deleteCollectionByUserIdAndType(@PathVariable("userId") Long userId,
                                                                   @PathVariable("type") Integer type){
         return collectionService.deleteCollectionsByTypeAndUserId(type, userId);
+    }
+
+    @GetMapping("/bridges/user_id/{userId}")
+    public CommonResponse<List<Bridge>> getBridgesFromCollectionByUserId(@PathVariable("userId") Long userId){
+        return collectionService.getBridgesFromCollection(userId);
+    }
+
+    @GetMapping("/poems/user_id/{userId}")
+    public CommonResponse<List<Poem>> getPoemsFromCollectionByUserId(@PathVariable("userId") Long userId){
+        return collectionService.getPoemsFromCollection(userId);
+    }
+
+    @GetMapping("/articles/user_id/{userId}")
+    public CommonResponse<List<Article>> getArticlesFromCollectionByUserId(@PathVariable("userId") Long userId){
+        return collectionService.getArticlesFromCollection(userId);
     }
 
 }

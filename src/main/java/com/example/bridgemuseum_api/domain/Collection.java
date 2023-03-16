@@ -11,7 +11,7 @@ public class Collection {
     @TableId(type = IdType.AUTO)
     private Long id;
     // there are 4 kinds of items: articles, bridges, poems, products
-    private String idOfItem;
+    private Integer idOfItem;
     private Integer typeOfItem;
     private Long userId;
 }
