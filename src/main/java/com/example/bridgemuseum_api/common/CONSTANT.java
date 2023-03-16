@@ -16,4 +16,11 @@ public class CONSTANT {
         int HEAD = 0;
         int NOT_HEAD = 1;
     }
+
+    public interface COLLECTION_ITEM{
+        int BRIDGE = 0;
+        int PRODUCT = 1;
+        int ARTICLE = 2;
+        int POEM = 3;
+    }
 }
