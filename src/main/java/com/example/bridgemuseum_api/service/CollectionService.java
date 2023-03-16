@@ -5,6 +5,7 @@ import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.domain.Bridge;
 import com.example.bridgemuseum_api.domain.Collection;
 import com.example.bridgemuseum_api.domain.Poem;
+import com.example.bridgemuseum_api.domain.Product;
 
 import java.util.List;
 
@@ -30,4 +31,6 @@ public interface CollectionService {
     CommonResponse<List<Poem>> getPoemsFromCollection(Long userId);
 
     CommonResponse<List<Article>> getArticlesFromCollection(Long userId);
+
+    CommonResponse<List<Product>> getProductsFromCollection(Long userId);
 }

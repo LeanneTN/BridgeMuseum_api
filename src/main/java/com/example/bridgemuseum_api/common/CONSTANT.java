@@ -23,4 +23,8 @@ public class CONSTANT {
         int ARTICLE = 2;
         int POEM = 3;
     }
+
+    public interface CATEGORY{
+        int POSTCARD = 0;
+    }
 }

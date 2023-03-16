@@ -8,12 +8,10 @@ import com.example.bridgemuseum_api.common.ResponseCode;
 import com.example.bridgemuseum_api.domain.Bridge;
 import com.example.bridgemuseum_api.domain.Collection;
 import com.example.bridgemuseum_api.domain.Poem;
+import com.example.bridgemuseum_api.domain.Product;
 import com.example.bridgemuseum_api.mapper.CollectionMapper;
 import com.example.bridgemuseum_api.mapper.PassageMapper;
-import com.example.bridgemuseum_api.service.BridgeService;
-import com.example.bridgemuseum_api.service.CollectionService;
-import com.example.bridgemuseum_api.service.PassageService;
-import com.example.bridgemuseum_api.service.PoemService;
+import com.example.bridgemuseum_api.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +31,9 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Autowired
     private PoemService poemService;
+
+    @Autowired
+    private ProductService productService;
 
     @Override
     public CommonResponse<Collection> addCollection(Collection collection) {
@@ -151,5 +152,20 @@ public class CollectionServiceImpl implements CollectionService {
             return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), ResponseCode.LIST_EMPTY.getDescription());
         }
         return CommonResponse.createForSuccess(articles);
+    }
+
+    @Override
+    public CommonResponse<List<Product>> getProductsFromCollection(Long userId) {
+        List<Collection> collections = collectionMapper.selectList(Wrappers.<Collection>query()
+                .eq("user_id", userId).eq("type", CONSTANT.COLLECTION_ITEM.PRODUCT));
+        List<Product> products = new ArrayList<>();
+        for (Collection collection : collections){
+            Product product = productService.getProductById(collection.getIdOfItem()).getData();
+            products.add(product);
+        }
+        if (products.isEmpty()){
+            return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), ResponseCode.LIST_EMPTY.getDescription());
+        }
+        return CommonResponse.createForSuccess(products);
     }
 }
