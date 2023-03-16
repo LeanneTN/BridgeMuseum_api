@@ -14,6 +14,6 @@ public class CONSTANT {
 
     public interface PASSAGE{
         int HEAD = 0;
-        int NOTHEAD = 1;
+        int NOT_HEAD = 1;
     }
 }

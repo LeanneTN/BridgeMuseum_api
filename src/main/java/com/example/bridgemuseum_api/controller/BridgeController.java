@@ -86,4 +86,32 @@ public class BridgeController {
     public CommonResponse<List<Bridge>> getHistoricalBridges(){
         return bridgeService.getBridgesByType(CONSTANT.BRIDGE_TYPE.HISTORICAL_BRIDGE);
     }
+
+    @GetMapping("/bridges/province/{province}")
+    public CommonResponse<List<Bridge>> getBridgesByProvince(@PathVariable("province") String province){
+        return bridgeService.getBridgesByProvince(province);
+    }
+
+    @GetMapping("/bridges/province/{province}/city/{city}")
+    public CommonResponse<List<Bridge>> getBridgesByProvinceAndCity(@PathVariable("province") String province,
+                                                                    @PathVariable("city") String city){
+        return bridgeService.getBridgesByProvinceAndCity(province, city);
+    }
+
+    @GetMapping("/bridges/address")
+    public CommonResponse<List<Bridge>> getBridgesByAddress(@RequestBody @NotBlank Address address){
+        return bridgeService.getBridgesByPreciseAddress(address);
+    }
+
+    @PostMapping("/dynasty/{dynasty}/id/{id}")
+    public CommonResponse<Bridge> modifyDynastyById(@PathVariable("dynasty") String dynasty,
+                                                    @PathVariable("id") Integer id){
+        return bridgeService.modifyDynastyById(dynasty, id);
+    }
+
+    @PostMapping("/type/{type}/id/{id}")
+    public CommonResponse<Bridge> modifyTypeById(@PathVariable("type") Integer type,
+                                                 @PathVariable("id") Integer id){
+        return bridgeService.modifyTypeById(type, id);
+    }
 }
