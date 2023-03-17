@@ -5,17 +5,18 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
-@TableName("product")
-public class Product {
+@TableName("cart")
+public class Cart {
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private Integer category;
-    private String name;
-    private BigDecimal price;
-    private String urlOfPic;
-    private String description;
+    private Integer productId;
+    private Long userId;
     private Integer quantity;
+    private Double price;
+    private Double totalPriceOfProduct;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }

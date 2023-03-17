@@ -26,5 +26,21 @@ public class CONSTANT {
 
     public interface CATEGORY{
         int POSTCARD = 0;
+        int CLOTHES = 1;
+        int SHOES = 2;
+        int TROUSERS = 3;
+        int GLASSES = 4;
+        int BOTTLE = 5;
+    }
+
+    public interface PRODUCT_STATUS{
+        int AVAILABLE = 0;
+        int SOLD_OUT = 1;
+    }
+
+    public interface ORDER_STATUS{
+        int OPEN = 0;
+        int TRANSPORT = 1;
+        int CLOSE = 2;
     }
 }
