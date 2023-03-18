@@ -6,9 +6,11 @@ import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.common.ResponseCode;
 import com.example.bridgemuseum_api.domain.Cart;
 import com.example.bridgemuseum_api.domain.Order;
+import com.example.bridgemuseum_api.domain.OrderProduct;
 import com.example.bridgemuseum_api.domain.Product;
 import com.example.bridgemuseum_api.mapper.CartMapper;
 import com.example.bridgemuseum_api.mapper.OrderMapper;
+import com.example.bridgemuseum_api.mapper.OrderProductMapper;
 import com.example.bridgemuseum_api.mapper.ProductMapper;
 import com.example.bridgemuseum_api.service.CartService;
 import com.example.bridgemuseum_api.service.OrderService;
@@ -20,6 +22,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
@@ -35,9 +38,14 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private OrderProductMapper orderProductMapper;
+
     @Override
     public CommonResponse<OrderVO> addOrder(Long userId, OrderAddress address) {
         Order order = new Order();
+        order.setOrderNo(generateOrderNo());
+        order.setCreateTime(LocalDateTime.now());
         List<Cart> cartList = cartService.getCheckedCartItems(userId).getData();
         if (cartList.isEmpty()){
             return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), "no checked item in the cart");
@@ -47,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal totalPrice = BigDecimal.ZERO;
         for (Cart cart : cartList){
             OrderItemVO orderItemVO = new OrderItemVO();
+            OrderProduct orderProduct = new OrderProduct();
             Product product = productMapper.selectById(cart.getProductId());
             orderItemVO.setQuantity(cart.getQuantity());
             orderItemVO.setProductName(product.getName());
@@ -54,13 +63,20 @@ public class OrderServiceImpl implements OrderService {
             orderItemVO.setTotalPrice(BigDecimal.valueOf(cart.getTotalPriceOfProduct()));
             orderItemVOList.add(orderItemVO);
             totalPrice = BigDecimalUtil.add(totalPrice.doubleValue(), BigDecimal.valueOf(cart.getTotalPriceOfProduct()).doubleValue());
+            orderProduct.setOrderNo(order.getOrderNo().toString());
+            orderProduct.setProductPrice(product.getPrice());
+            orderProduct.setProductName(product.getName());
+            orderProduct.setProductQuantity(cart.getQuantity());
+            int role = orderProductMapper.insert(orderProduct);
+            if (role == 0){
+                return CommonResponse.createForError("create order failed");
+            }
         }
         order.setOrderStatus(CONSTANT.ORDER_STATUS.OPEN);
         order.setCity(address.getCity());
         order.setProvince(address.getProvince());
         order.setCountry(address.getCountry());
         order.setPreciseAddress(address.getPreciseAddress());
-        order.setCreateTime(LocalDateTime.now());
         order.setPaymentPrice(totalPrice);
         int role = orderMapper.insert(order);
         if(role == 0){
@@ -77,6 +93,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public CommonResponse<OrderCartItemVO> getOrderDetail(Long userId) {
+
         return null;
     }
 
@@ -88,5 +105,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public CommonResponse<String> cancelOrder(Long userId, Long orderId) {
         return null;
+    }
+
+    private Long generateOrderNo(){
+        return System.currentTimeMillis() + new Random().nextInt(1000);
     }
 }
