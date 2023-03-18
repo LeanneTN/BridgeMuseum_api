@@ -99,11 +99,18 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CommonResponse<CartVO> deleteCartItems(Long userId, Integer productId) {
-        return null;
+        int role = cartMapper.delete(Wrappers.<Cart>query().eq("user_id", userId).eq("product_id", productId));
+        if (role == 0){
+            return CommonResponse.createForError("delete product failed");
+        }
+        CartVO cartVO = getCartVoByUserId(userId).getData();
+        return CommonResponse.createForSuccess(cartVO);
     }
 
     @Override
     public CommonResponse<Integer> getCartCount(Long userId) {
-        return null;
+        List<Cart> cartList = cartMapper.selectList(Wrappers.<Cart>query().eq("user_id", userId));
+        int count = cartList.size();
+        return CommonResponse.createForSuccess(count);
     }
 }
