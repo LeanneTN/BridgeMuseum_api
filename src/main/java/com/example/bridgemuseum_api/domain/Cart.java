@@ -19,4 +19,6 @@ public class Cart {
     private Double totalPriceOfProduct;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+    // item won't be put into order unless you checked it
+    private Boolean checked;
 }

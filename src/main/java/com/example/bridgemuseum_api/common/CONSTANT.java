@@ -43,4 +43,10 @@ public class CONSTANT {
         int TRANSPORT = 1;
         int CLOSE = 2;
     }
+
+    public interface PAYMENT_TYPE{
+        int WECHAT = 0; //DEFAULT
+        int ALI_PAY = 1;
+        int VISA = 2;
+    }
 }

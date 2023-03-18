@@ -113,4 +113,14 @@ public class CartServiceImpl implements CartService {
         int count = cartList.size();
         return CommonResponse.createForSuccess(count);
     }
+
+    @Override
+    public CommonResponse<List<Cart>> getCheckedCartItems(Long userId) {
+        List<Cart> cartList = cartMapper.selectList(Wrappers.<Cart>query().eq("user_id", userId)
+                .eq("checked", true));
+        if(cartList.isEmpty()){
+            return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), ResponseCode.LIST_EMPTY.getDescription());
+        }
+        return CommonResponse.createForSuccess(cartList);
+    }
 }

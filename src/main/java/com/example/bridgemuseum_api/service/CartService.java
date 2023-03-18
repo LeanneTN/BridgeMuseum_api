@@ -4,6 +4,8 @@ import com.example.bridgemuseum_api.VO.CartVO;
 import com.example.bridgemuseum_api.common.CommonResponse;
 import com.example.bridgemuseum_api.domain.Cart;
 
+import java.util.List;
+
 public interface CartService {
     public CommonResponse<Cart> addCart(Cart cart);
 
@@ -20,4 +22,6 @@ public interface CartService {
     public CommonResponse<CartVO> deleteCartItems(Long userId, Integer productId);
 
     public CommonResponse<Integer> getCartCount(Long userId);
+
+    public CommonResponse<List<Cart>> getCheckedCartItems(Long userId);
 }
