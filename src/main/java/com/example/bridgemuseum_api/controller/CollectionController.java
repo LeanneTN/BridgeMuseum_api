@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
+/**
+ * @author LeanneTN
+ * the collection of user, including items like articles, product and bridges
+ */
 @RestController
 @RequestMapping("/collection")
 public class CollectionController {

@@ -43,6 +43,7 @@ public class CONSTANT {
         int TRANSPORT = 1;
         int CLOSE = 2;
         int END = 3;
+        int CANCEL = 4;
     }
 
     public interface PAYMENT_TYPE{

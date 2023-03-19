@@ -14,4 +14,8 @@ public interface OrderService {
     CommonResponse<List<OrderVO>> getOrderList(Long userId);
 
     CommonResponse<String> cancelOrder(Long userId, Long orderId);
+
+    CommonResponse<String> modifyStatus(Integer status, Long orderId);
+
+    CommonResponse<Object> deleteOrderInfoByUserId(Long userId, Long orderId);
 }
