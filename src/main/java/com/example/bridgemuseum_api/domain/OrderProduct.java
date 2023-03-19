@@ -13,6 +13,7 @@ public class OrderProduct {
     @TableId(type = IdType.AUTO)
     private Long id;
     private String orderNo;
+    private Integer productId;
     private String productName;
     private Integer productQuantity;
     private BigDecimal productPrice;

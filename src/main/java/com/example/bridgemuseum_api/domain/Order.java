@@ -17,11 +17,15 @@ public class Order {
     private Long userId;
     private BigDecimal paymentPrice;
     private Integer orderStatus;
+    private Integer paymentType;
     private String country;
     private String province;
     private String city;
+    private String postCode;
     private String preciseAddress;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private LocalDateTime closeTime;
+    private LocalDateTime endTime;
+    private LocalDateTime sendTime;
 }

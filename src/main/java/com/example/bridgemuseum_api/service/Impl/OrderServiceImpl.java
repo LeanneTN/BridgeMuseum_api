@@ -1,5 +1,6 @@
 package com.example.bridgemuseum_api.service.Impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bridgemuseum_api.VO.*;
 import com.example.bridgemuseum_api.common.CONSTANT;
 import com.example.bridgemuseum_api.common.CommonResponse;
@@ -67,15 +68,23 @@ public class OrderServiceImpl implements OrderService {
             orderProduct.setProductPrice(product.getPrice());
             orderProduct.setProductName(product.getName());
             orderProduct.setProductQuantity(cart.getQuantity());
+            orderProduct.setProductId(product.getId());
+            product.setQuantity(product.getQuantity() - cart.getQuantity());
             int role = orderProductMapper.insert(orderProduct);
             if (role == 0){
                 return CommonResponse.createForError("create order failed");
             }
+            role = productMapper.updateById(product);
+            if (role == 0){
+                return CommonResponse.createForError("product stock update failed");
+            }
         }
         order.setOrderStatus(CONSTANT.ORDER_STATUS.OPEN);
         order.setCity(address.getCity());
+        order.setPaymentType(CONSTANT.PAYMENT_TYPE.WECHAT); // default payment type is wechat pay
         order.setProvince(address.getProvince());
         order.setCountry(address.getCountry());
+        order.setPostCode(address.getPostCode());
         order.setPreciseAddress(address.getPreciseAddress());
         order.setPaymentPrice(totalPrice);
         int role = orderMapper.insert(order);
@@ -92,14 +101,59 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public CommonResponse<OrderCartItemVO> getOrderDetail(Long userId) {
-
-        return null;
+    public CommonResponse<OrderCartItemVO> getOrderDetail(Long userId, String orderNo) {
+        OrderCartItemVO orderCartItemVO = new OrderCartItemVO();
+        List<OrderItemVO> orderItemVOList = new ArrayList<>();
+        List<OrderProduct> orderProducts = orderProductMapper.selectList(Wrappers.<OrderProduct>query()
+                .eq("order_no", orderNo));
+        Order order = orderMapper.selectOne(Wrappers.<Order>query().eq("order_no", orderNo));
+        if (orderProducts.isEmpty()){
+            return CommonResponse.createForError(ResponseCode.LIST_EMPTY.getCode(), ResponseCode.LIST_EMPTY.getDescription());
+        }
+        for (OrderProduct orderProduct : orderProducts){
+            OrderItemVO orderItemVO = new OrderItemVO();
+            orderItemVO.setTotalPrice(BigDecimalUtil.multiply(orderProduct.getProductQuantity().doubleValue(),
+                    orderProduct.getProductPrice().doubleValue()));
+            orderItemVO.setProductId(orderProduct.getProductId());
+            orderItemVO.setCurrentPrice(orderProduct.getProductPrice());
+            orderItemVO.setProductName(orderProduct.getProductName());
+            orderItemVOList.add(orderItemVO);
+        }
+        orderCartItemVO.setOrderItemVOList(orderItemVOList);
+        orderCartItemVO.setPaymentPrice(order.getPaymentPrice());
+        return CommonResponse.createForSuccess(orderCartItemVO);
     }
 
     @Override
     public CommonResponse<List<OrderVO>> getOrderList(Long userId) {
-        return null;
+        List<Order> orderList = orderMapper.selectList(Wrappers.<Order>query().eq("user_id", userId));
+        List<OrderVO> orderVOS = new ArrayList<>();
+        for (Order order : orderList){
+            OrderVO orderVO = new OrderVO();
+            orderVO.setPaymentPrice(order.getPaymentPrice());
+            orderVO.setOrderNo(order.getOrderNo());
+            orderVO.setCreateTime(order.getCreateTime().toString());
+            orderVO.setUpdateTime(order.getUpdateTime().toString());
+            orderVO.setCloseTime(order.getCloseTime().toString());
+            orderVO.setEndTime(order.getEndTime().toString());
+            orderVO.setPaymentType(order.getPaymentType());
+            orderVO.setSendTime(orderVO.getSendTime());
+            List<OrderItemVO> orderItemVOList = new ArrayList<>();
+            List<OrderProduct> orderProducts = orderProductMapper.selectList(Wrappers.<OrderProduct>query()
+                    .eq("order_no", order.getOrderNo()));
+            for (OrderProduct orderProduct : orderProducts){
+                OrderItemVO orderItemVO = new OrderItemVO();
+                orderItemVO.setTotalPrice(BigDecimalUtil.multiply(orderProduct.getProductQuantity().doubleValue(),
+                        orderProduct.getProductPrice().doubleValue()));
+                orderItemVO.setProductId(orderProduct.getProductId());
+                orderItemVO.setCurrentPrice(orderProduct.getProductPrice());
+                orderItemVO.setProductName(orderProduct.getProductName());
+                orderItemVOList.add(orderItemVO);
+            }
+            orderVO.setOrderItemVOList(orderItemVOList);
+            orderVOS.add(orderVO);
+        }
+        return CommonResponse.createForSuccess(orderVOS);
     }
 
     @Override

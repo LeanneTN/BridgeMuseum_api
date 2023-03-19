@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderService {
     CommonResponse<OrderVO> addOrder(Long userId, OrderAddress address);
 
-    CommonResponse<OrderCartItemVO> getOrderDetail(Long userId);
+    CommonResponse<OrderCartItemVO> getOrderDetail(Long userId, String orderNo);
 
     CommonResponse<List<OrderVO>> getOrderList(Long userId);
 
